@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Admin | Registration</title>
+         <link rel="stylesheet" type="text/css" href="CSS/style.css"/>
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
+        <style>
+             .error{color:red}
+        </style>
+    </h:head>
+    <h:body>
+        <div class="container">
+        <div class="navbar navbar-inverse">
+            <div class="navbar-brand">Registration Form</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-xs-updated">
+                <h:form styleClass="form-horizontal">
+                    <!-- First Name -->
+                    <div class="form-group">
+                        <p:outputLabel value="First Name: " styleClass="control-label col-sm-2" />
+                        <div class="col-sm-5">
+                            <p:inputText value="#{registration.firstName}" styleClass="form-control" required="true" requiredMessage="Field not allowed blank !"/>
+                             <h:message for="FisrtName" styleClass="error" style="color:red"></h:message>
+                        </div>
+                    </div>
+                    <!-- Middle Name -->
+                    <div class="form-group">
+                        <p:outputLabel value="Middle Name: " styleClass="control-label col-sm-2" />
+                        <div class="col-sm-5">
+                            <p:inputText value="#{registration.middleName}" styleClass="form-control" />
+                        </div>
+                    </div>
+                    <!-- Last Name -->
+                    <div class="form-group">
+                        <p:outputLabel value="Last Name: " styleClass="control-label col-sm-2" />
+                        <div class="col-sm-5">
+                            <p:inputText value="#{registration.lastName}" styleClass="form-control" rendered="true" requiredMessage="Filed not allowed blank !"/>
+                             <h:message for="LastName" styleClass="error"></h:message>
+                        </div>
+                    </div>
+                    <!-- Faculty -->
+                    <div class="form-group">
+                       <p:outputLabel for="faculty" value="Faculty: " styleClass="control-label col-sm-2"/>  
+                       <div class="col-sm-3">
+                           <p:selectOneMenu id="faculty" value="#{registration.faculty}" rendered="true">  
+                           <p:ajax listener="#{registration.onFacultyChange()}" update="program"></p:ajax>  
+                        <f:selectItem itemLabel="Select Faculty" itemValue="" noSelectionOption="true" />  
+                        <f:selectItems value="#{registration.faculties}" />  
+                        </p:selectOneMenu>  
+                            <h:message for="faculty" styleClass="error"></h:message>
+                       </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <p:outputLabel for="program" value="Program: " styleClass="control-label col-sm-2"/>  
+                        <div class="col-sm-5">
+                            <p:selectOneMenu id="program" value="#{registration.program}" rendered="true">  
+                            <f:selectItem itemLabel="Select Program" itemValue="" noSelectionOption="true" />  
+                            <f:selectItems value="#{registration.programs}" />  
+                        </p:selectOneMenu>  
+                             <h:message for="program" styleClass="error"></h:message>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <p:commandButton value="Submit" action="#{registration.submitRegistrationForm()}" styleClass="btn btn-default"  ajax="false"/>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+            
+             <p:separator></p:separator>
+             <h:dataTable id="resulttable" value="#{registration.registrationList}" var="val" border="1"  styleClass="table table-striped">
+                <h:column>
+                    <f:facet name="header">First Name</f:facet>
+                    #{val.firstName}
+                </h:column>
+                 <h:column>
+                    <f:facet name="header">Middle Name</f:facet>
+                    #{val.middleName}
+                </h:column>
+                 <h:column>
+                    <f:facet name="header">Last Name</f:facet>
+                    #{val.lastName}
+                </h:column>
+                 <h:column>
+                    <f:facet name="header">Faculty</f:facet>
+                    #{val.faculty}
+                </h:column>
+                 <h:column>
+                    <f:facet name="header">Program</f:facet>
+                    #{val.program}
+                </h:column>
+                 <h:column>
+                <f:facet name="header">Action</f:facet>
+                <h:form>
+                    <h:commandLink value = "Delete" action="#{registration.deleteRow(val)}"   ></h:commandLink> 
+                    <h:outputText value="&#160;&#160;&#160;&#160;&#160;&#160;" />
+                    <h:commandLink value = "Edit" action="#{registration.editRow(val)}"   ></h:commandLink> 
+
+                </h:form>
+            </h:column>
+            
+            </h:dataTable>
+             
+        </div>
+    </div> 
+        
+        
+    </h:body>
+</html>
